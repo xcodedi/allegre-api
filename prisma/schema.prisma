@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Definition of the `organization` model, with a relation to `Users`.
+model organization {
+  id       String   @id @default(uuid())
+  name     String
+  logo_url String?
+  cnpj     String
+  phone    String
+
+  users    Users[]  // Define a one-to-many relationship with `Users`.
+
+  @@map("organization")
+}
+
+// Definition of the `Users` model, with a relation to `organization`.
+model Users {
+  id               String          @id @default(uuid())
+  organization     organization    @relation(fields: [organizationid], references: [id])
+  organizationid   String
+  name             String
+  email            String
+  password         String
+  logo_url         String?
+
+  @@map("users")
+}
