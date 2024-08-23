@@ -2,6 +2,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum UserRole {
+  SUPER_ADMIN
+  ORG_ADMIN
+  ORG_MEMBER
+  ORG_TEACHER
+  ORG_PARENT
+  ORG_STUDENT
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -22,13 +31,13 @@ model organization {
 
 // Definition of the `Users` model, with a relation to `organization`.
 model Users {
-  id               String          @id @default(uuid())
-  organization     organization    @relation(fields: [organizationid], references: [id])
-  organizationid   String
-  name             String
-  email            String
-  password         String
-  logo_url         String?
-
-  @@map("users")
+  id             String        @id @default(uuid())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  name           String
+  email          String
+  password       String
+  avatarUrl      String?
+  role           UserRole
+  @@map("user")
 }
