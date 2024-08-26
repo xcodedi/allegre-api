@@ -8,6 +8,21 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findByEmail(
+    email: string,
+    organizationid: string,
+  ): Promise<UserEntity> {
+    return this.prisma.users.findFirst({
+      where: {
+        email,
+        organizationid,
+      },
+      include: {
+        organization: true,
+      },
+    });
+  }
+
   async list(): Promise<UserEntity[]> {
     return this.prisma.users.findMany({
       include: {
