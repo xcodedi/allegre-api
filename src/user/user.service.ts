@@ -10,7 +10,7 @@ export class UserService {
 
   async findByEmail(
     email: string,
-    organizationid: string,
+    organizationid?: string,
   ): Promise<UserEntity> {
     return this.prisma.users.findFirst({
       where: {
